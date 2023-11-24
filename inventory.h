@@ -17,10 +17,6 @@ class Inventory
     Node * head;
     Node * tail;
     int count;
-private:
-    // Doughnut *doughnuts;
-    // int capacity;
-    // void growList();
 
 public:
     // constructors

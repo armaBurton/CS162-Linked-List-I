@@ -303,44 +303,23 @@ void Inventory::insertDoughnut(Doughnut &newDoughnut){
     if(head == nullptr){    //if list is empty head = new node
         head = nodePtr;
         tail = nodePtr;
-        cout << "new" << endl;
     } else if (strcmp(newDoughnut.getName(), head->doughnut.getName()) <= 0){ //add to the head
-        cout << "heads" << endl;
         nodePtr->next = head;
         head = nodePtr;
     } else if (strcmp(tail->doughnut.getName(), nodePtr->doughnut.getName()) <= 0) {  //add to the end of the list
-        cout << "tails" << endl;
         tail->next = nodePtr;
         tail = nodePtr;
     } else {
         cur = prev = head;
-        while(strcmp(nodePtr->doughnut.getName(), cur->doughnut.getName()) >= 0){
+        while(strcmp(nodePtr->doughnut.getName(), cur->doughnut.getName()) >= 0){   //add into list
             prev = cur;
             cur = cur->next;
-            cout << "while loop" << endl;
         }
         prev->next = nodePtr;
         nodePtr->next = cur;
     }
     count++;
 }
-
-// void Inventory::growList()
-// {
-//     capacity++;
-//     char tempName[MAXCHAR];
-//     char tempAddIns[MAXCHAR];
-
-//     Doughnut *tempDoughnuts = new Doughnut[capacity];
-//     for (int i = 0; i < count; i++)
-//     {
-//         tempDoughnuts[i] = doughnuts[i];
-//     }
-
-//     delete[] doughnuts;
-//     doughnuts = tempDoughnuts;
-//     tempDoughnuts = NULL;
-// }
 
 int Inventory::getCount()
 {

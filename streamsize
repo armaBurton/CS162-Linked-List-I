@@ -1,0 +1,214 @@
+#include "doughnuts.h"
+
+bool loadData(Doughnut doughnuts[], int &count){
+	ifstream infile("voodoo.txt");
+	
+
+	if(!infile.is_open()){
+		cerr << "File did not open. Program exiting.\n";
+		return false;
+	}
+
+	char killThisLine[500];
+	infile.getline(killThisLine, 500, '\n');
+	
+	while(infile >> doughnuts[count].inventory){
+		infile.ignore(5, ';');
+		infile.getline(doughnuts[count].name, 101, ';');
+		infile >> doughnuts[count].price;
+		infile.ignore(5, ';');
+		infile.getline(doughnuts[count].addIns, 505, ';');
+		infile >> doughnuts[count].type;
+		infile.ignore(50, '\n');
+		count++;
+	}
+	
+	infile.close();
+
+	return true;
+}
+
+void writeToConsole(Doughnut doughnuts[], const int count){
+	char doughnut[10];
+
+	for (int i = 0; i < count; i++){
+		doughnutType(doughnuts[i].type, doughnut);
+		
+		cout << i + 1 << ". " << doughnuts[i].inventory << ";" << doughnuts[i].name << ";" 
+				 << fixed << setprecision(2) << doughnuts[i].price << ";" << doughnuts[i].addIns << ";"
+				 << doughnut << endl
+				 << endl;
+	}
+}
+
+void addDoughnut(Doughnut doughnuts[], int &count){
+	char prompt[101];
+	strcpy(prompt, "Enter a quantity (whole numbers between 1 and 200):");
+	Doughnut tempDoughnut;
+	getInt(prompt, 1, 200, tempDoughnut.inventory);
+	strcpy(prompt, "Enter the doughtname (100 characters or less): ");
+	getCharacterString(prompt, 101, tempDoughnut.name);
+	strcpy(prompt, "Enter the price (between 1.00 and 10.00): ");
+	getDouble(prompt, 1, 10, tempDoughnut.price);
+	strcpy(prompt, "Enter the ingredients (100 characters or less): ");
+	getCharacterString(prompt, 101, tempDoughnut.addIns);
+	strcpy(prompt, "Enter the type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Others): ");
+	getInt(prompt, 0, 4, tempDoughnut.type);
+
+	char doughnut[10];
+	doughnutType(tempDoughnut.type, doughnut);
+	insertDoughnut(doughnuts, count, tempDoughnut);
+}
+
+void doughnutType(int num, char doughnut[]){
+	switch (num){
+		case 0:
+			strcpy(doughnut, "Ring");
+			break;
+		case 1:
+			strcpy(doughnut, "Round");			
+			break;
+		case 2:
+			strcpy(doughnut, "Bar");			
+			break;
+		case 3:
+			strcpy(doughnut, "Cannoli");			
+			break;
+		case 4:
+			strcpy(doughnut, "Others");			
+			break;
+		default:
+			strcpy(doughnut, "Invalid Type");
+			break;
+	}
+}
+
+void getInt(char prompt[], const int min, const int max, int &value){
+	int intBuffer;
+	cout << prompt << endl;
+	cin >> intBuffer;
+	while (intBuffer > max || intBuffer < min || cin.fail()){
+		if (intBuffer > max || intBuffer < min){
+			cout << "Values must be between " << min << " and " << max << " inclusive.\n"
+					 << prompt << endl;
+		}
+		if (cin.fail()){
+			cout << "You chose poorly\n"
+					 << prompt << endl;
+		}
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cin >> intBuffer;
+	}
+	value = intBuffer;
+	cin.ignore(numeric_limits<streamsize>::max(),'\n');
+}
+
+void getCharacterString(char prompt[], const int max, char userPrompt[]){
+	cin.ignore(numeric_limits<streamsize>::max() ,'\n');
+	char userInput[max];
+	cout << prompt;
+	cin.getline(userInput, max, '\n');
+	cout << userInput << endl;
+	strcpy(userPrompt, userInput);
+}
+
+void getDouble(char prompt[], const int min, const int max, double &value){
+	double doubleBuffer;
+	cout << prompt << endl;
+	cin >> doubleBuffer;
+	while (doubleBuffer < min || doubleBuffer > max || cin.fail()){
+		if (doubleBuffer < min || doubleBuffer > max){
+			cout << "Invalid price! Must be between " << min << " and " << max << " inclusive!\n"
+					 << prompt << endl;
+		}
+		if(cin.fail()){
+			cout << "You chose poorly\n"
+					 << prompt << endl;
+		}
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cin >> doubleBuffer;
+	}
+	value = doubleBuffer;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+void getUpper(char makeUpper[], int &makeCount, char targetCString[]){
+	cout << "input " << targetCString << endl;
+	while (targetCString[makeCount] != '\0'){
+		makeUpper[makeCount] = toupper(targetCString[makeCount]);
+		makeCount++;
+	}
+	makeUpper[makeCount] = '\0';
+	cout << "makeUpper " << makeUpper << endl;
+}
+
+void insertDoughnut(Doughnut doughnuts[], int &count, Doughnut newDoughnut){
+	int index = count,
+			newCount = 0,
+			oldCount = 0;
+
+	char newUpper[101];
+	
+	getUpper(newUpper, newCount, newDoughnut.name);
+	for (int i = 0; i < count; i++){
+		char oldUpper[101];
+		getUpper(oldUpper, oldCount, doughnuts[i].name);
+		
+		if(strcmp(newUpper, oldUpper) < 0){
+			index = i;
+			break;
+		}
+		oldCount = 0;
+	}
+
+	for(int i = count; i > index;i--){
+		doughnuts[i] = doughnuts[i - 1];
+	}
+
+	doughnuts[index] = newDoughnut;
+
+	count++;
+}
+
+void removeByIndex(Doughnut doughnuts[], int &count){
+	int index, max = count + 1;
+	char prompt[101] = "Enter index of the doughtnut to remove: ";
+	writeToConsole(doughnuts, count);	
+	
+	getInt(prompt, 1, max, index);
+	
+	removeIndex(doughnuts, count, index);
+}
+
+void removeIndex(Doughnut doughnuts[], int &count, int index){
+	for(int i = index - 1; i < count; i++){
+		doughnuts[i] = doughnuts[i + 1];
+	}
+	count--;
+}
+
+void listByType(Doughnut doughnuts[], const int count){
+	char prompt[101] = "Enter type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Other";
+	int type, typeCount = 0;
+	Doughnut doughnutsOfType[101];
+	getInt(prompt, 0, 4, type);
+
+	for (int i = 0; i < count; i++){
+		if (doughnuts[i].type == type){
+			doughnutsOfType[typeCount] = doughnuts[i];
+			typeCount++;
+		}
+	}
+
+	cout << "Doughnuts of that type are:" << endl;
+	writeToConsole(doughnutsOfType, typeCount);
+}
+
+void listByIngredient(Doughnut doughtnuts[], const int count){
+	char prompt[101] = "Enter the search ingredient: ";
+	char userPrompt[101];
+	getCharacterString(prompt, 101, userPrompt);
+	cout << userPrompt << endl;
+}

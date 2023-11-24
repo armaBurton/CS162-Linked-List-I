@@ -92,6 +92,42 @@ void Inventory::writeToConsoleSelect(Doughnut *doughnuts, const int count)
              << doughnut << endl;
     }
 }
+
+/*
+    Name:   writeToConsole()
+    Desc:   This function reads through the array and displays
+            the data to the console
+    input:  none
+    output: prompt
+    return: none
+*/
+void Inventory::writeToConsoleSelect(Inventory &inv, const int count)
+{
+    // Node * cur = inv;
+    // int curCount = 1;
+    // for(cur;cur;cur = cur->next){
+    //     cout << curCount++ << ". "
+    //              << cur->doughnut.getInventory() << ";"
+    //              << cur->doughnut.getName() << ";"
+    //              << fixed << setprecision(2) << "$" << cur->doughnut.getPrice() << ";"
+    //              << cur->doughnut.getAddIns() << ";"
+    //              << cur->doughnut.getType() << endl;
+    //         cur = cur->next;
+    // }
+    // for (int i = 0; i < count; i++)
+    // {
+    //     char tempName[101], tempAddIns[101], doughnut[10];
+
+    //     doughnuts[i].getName(tempName);
+    //     doughnuts[i].getAddIns(tempAddIns);
+    //     doughnutType(doughnuts[i].getType(), doughnut);
+    //     cout << i + 1 << ". " << doughnuts[i].getInventory() << ';'
+    //          << tempName << ';' << fixed << setprecision(2)
+    //          << doughnuts[i].getPrice() << ';' << tempAddIns << ';'
+    //          << doughnut << endl;
+    // }
+}
+
 /*
     Name:   writeToConsole()
     Desc:   This function reads through the array and displays
@@ -295,7 +331,7 @@ void Inventory::getUpper(char makeUpper[], int &makeCount, char targetCString[])
     output: none
     return: none
 */
-void Inventory::insertDoughnut(Doughnut &newDoughnut){
+void Inventory::insertDoughnut(Doughnut & newDoughnut){
     Node * nodePtr = new Node;//Nodes have both a Doughnut and a next pointer
     Node * cur, * prev;
     nodePtr->next = nullptr;
@@ -336,13 +372,21 @@ int Inventory::getCount()
 */
 void Inventory::removeByIndex()
 {
-    int index, max = count + 1;
-    char prompt[101] = "Enter index of the doughtnut to remove: ";
-    writeToConsole();
+    int index;
+    if (head != nullptr){
+        char prompt[101] = "Enter index of the doughtnut to remove: ";
+        writeToConsole();
 
-    getInt(prompt, 1, max, index);
-
-    removeIndex(index);
+        getInt(prompt, 1, count, index);
+        while (index < 1 || index > count){
+            strcpy(prompt, "Index out of bounds, please try again: ");
+            getInt(prompt, 1, count, index);
+        }
+        removeIndex(index);
+        cout << "after removal" << endl;
+    } else {
+        cout << "The list is empty." << endl;
+    }
 }
 
 /*
@@ -355,11 +399,33 @@ void Inventory::removeByIndex()
 */
 void Inventory::removeIndex(const int index)
 {
-    // for (int i = index - 1; i < count - 1; i++)
-    // {
-    //     doughnuts[i] = doughnuts[i + 1];
-    // }
-    // count--;
+    Node * cur = head;
+    Node * prev = nullptr;
+    int curCount = 1;
+
+    if (index == 1){
+        if(head->next == nullptr){
+            delete head;
+            count--;
+            head = tail = nullptr;
+        } else {
+            head = head->next;
+            delete cur;
+            count--;
+        }
+    } else {
+        while (curCount < index){
+            prev = cur;
+            cur = cur->next;
+            curCount++;
+        }
+        prev->next = cur->next;
+        delete cur;
+        count--;
+        if (prev->next == nullptr){
+            tail = prev;
+        }
+    }
 }
 
 /*
@@ -372,10 +438,26 @@ void Inventory::removeIndex(const int index)
 */
 void Inventory::listByType()
 {
-    // char prompt[101] = "Enter type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Other";
-    // int type, typeCount = 0;
-    // Doughnut doughnutsOfType[101];
-    // getInt(prompt, 0, 4, type);
+    char prompt[101] = "Enter type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Other";
+    int type, typeCount = 1;
+    Node * cur = head;
+    Node * prev = nullptr;
+    Doughnut doughnutsOfType[101];
+    Inventory typeODonut;
+    getInt(prompt, 0, 4, type);
+
+    for(cur;cur;cur = cur->next){
+        if(cur->doughnut.getType() == type){
+            char donutType[MAXCHAR];
+            doughnutType(type, donutType);
+            cout << typeCount++ << ". "
+                 << cur->doughnut.getInventory() << ";"
+                 << cur->doughnut.getName() << ";"
+                 << fixed << setprecision(2) << "$" << cur->doughnut.getInventory() << ";"
+                 << cur->doughnut.getAddIns() << ";"
+                 << donutType << endl;
+        }
+    }
 
     // for (int i = 0; i < count; i++)
     // {
@@ -387,7 +469,7 @@ void Inventory::listByType()
     // }
 
     // cout << "Doughnuts of that type are:" << endl;
-    // writeToConsoleSelect(doughnutsOfType, typeCount);
+    // writeToConsoleSelect(typeODonut, typeCount);
 }
 
 /*

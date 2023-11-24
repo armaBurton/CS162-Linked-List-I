@@ -14,6 +14,6 @@
 // Function Prototypes
 void greetings(int count);
 void menu(char *option);
-void menuOption(char *option, Inventory *inventory);
+void menuOption(char *option, Inventory inventory);
 
 #endif

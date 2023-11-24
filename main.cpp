@@ -33,11 +33,11 @@ int main()
 
 	greetings(inventory.getCount());
 
-	// do
-	// {
-	// 	menu(option);
-	// 	menuOption(option, inventory);
-	// } while (option[0] != 'q');
+	do
+	{
+		menu(option);
+		menuOption(option, inventory);
+	} while (option[0] != 'q');
 
 	return 0;
 }
@@ -90,27 +90,27 @@ void menu(char *option)
 	output: none/prompt
 	return: none
 */
-void menuOption(char *option, Inventory *inventory)
+void menuOption(char *option, Inventory inventory)
 {
 	switch (*option)
 	{
 	case 'a':
-		inventory->addDoughnut();
+		inventory.addDoughnut();
 		break;
 	case 'l':
-		inventory->writeToConsole();
+		inventory.writeToConsole();
 		break;
 	case 't':
-		inventory->listByType();
+		inventory.listByType();
 		break;
 	case 'i':
-		inventory->listByIngredient();
+		inventory.listByIngredient();
 		break;
 	case 'r':
-		inventory->removeByIndex();
+		inventory.removeByIndex();
 		break;
 	case 'q':
-		inventory->saveAndQuit();
+		inventory.saveAndQuit();
 		break;
 	default:
 		cout << "Invalid option!! Please try again!" << endl;

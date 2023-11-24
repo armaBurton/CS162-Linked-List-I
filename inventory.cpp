@@ -102,6 +102,21 @@ void Inventory::writeToConsoleSelect(Doughnut *doughnuts, const int count)
 */
 void Inventory::writeToConsole()
 {
+    Node * cur = head;
+    int curCount = 1;
+    if(count == 0){
+        cout << "There are no doughnuts in your inventory" << endl;
+    } else {
+        while(cur != nullptr){
+            cout << curCount++ << ". "
+                 << cur->doughnut.getInventory() << ";"
+                 << cur->doughnut.getName() << ";"
+                 << fixed << setprecision(2) << "$" << cur->doughnut.getPrice() << ";"
+                 << cur->doughnut.getAddIns() << ";"
+                 << cur->doughnut.getType() << endl;
+            cur = cur->next;
+        }
+    }
     // cout << endl
     //      << count << endl;
     // for (int i = 0; i < count; i++)
@@ -299,7 +314,6 @@ void Inventory::insertDoughnut(Doughnut &newDoughnut){
     Node * cur, * prev;
     nodePtr->next = nullptr;
     nodePtr->doughnut = newDoughnut;
-    cout << nodePtr->doughnut.getName() << endl;
     if(head == nullptr){    //if list is empty head = new node
         head = nodePtr;
         tail = nodePtr;

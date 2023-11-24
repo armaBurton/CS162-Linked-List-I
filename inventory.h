@@ -36,8 +36,6 @@ public:
     bool loadData();
     int getCount();
     void writeToConsole();
-    void writeToConsoleSelect(Doughnut *doughnuts, const int count);
-    void writeToConsoleSelect(Inventory &inv, const int count);
     void doughnutType(int num, char doughnut[]);
     void saveAndQuit();
 };

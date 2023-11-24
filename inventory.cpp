@@ -9,16 +9,6 @@ Inventory::Inventory()
     count = 0;
 }
 
-// Inventory::Inventory(Doughnut *newDoughnut, int newCount)
-// {
-//     // doughnuts = new
-// }
-
-// Inventory::Inventory(const Doughnut &aDoughnut)
-// {
-//     cout << "here" << endl;
-// }
-
 /*
     Name:   loadData()
     Desc:   This function reads data from a file and
@@ -67,65 +57,6 @@ bool Inventory::loadData()
     // infile.close();
 
     return true;
-}
-
-/*
-    Name:   writeToConsole()
-    Desc:   This function reads through the array and displays
-            the data to the console
-    input:  none
-    output: prompt
-    return: none
-*/
-void Inventory::writeToConsoleSelect(Doughnut *doughnuts, const int count)
-{
-    for (int i = 0; i < count; i++)
-    {
-        char tempName[101], tempAddIns[101], doughnut[10];
-
-        doughnuts[i].getName(tempName);
-        doughnuts[i].getAddIns(tempAddIns);
-        doughnutType(doughnuts[i].getType(), doughnut);
-        cout << i + 1 << ". " << doughnuts[i].getInventory() << ';'
-             << tempName << ';' << fixed << setprecision(2)
-             << doughnuts[i].getPrice() << ';' << tempAddIns << ';'
-             << doughnut << endl;
-    }
-}
-
-/*
-    Name:   writeToConsole()
-    Desc:   This function reads through the array and displays
-            the data to the console
-    input:  none
-    output: prompt
-    return: none
-*/
-void Inventory::writeToConsoleSelect(Inventory &inv, const int count)
-{
-    // Node * cur = inv;
-    // int curCount = 1;
-    // for(cur;cur;cur = cur->next){
-    //     cout << curCount++ << ". "
-    //              << cur->doughnut.getInventory() << ";"
-    //              << cur->doughnut.getName() << ";"
-    //              << fixed << setprecision(2) << "$" << cur->doughnut.getPrice() << ";"
-    //              << cur->doughnut.getAddIns() << ";"
-    //              << cur->doughnut.getType() << endl;
-    //         cur = cur->next;
-    // }
-    // for (int i = 0; i < count; i++)
-    // {
-    //     char tempName[101], tempAddIns[101], doughnut[10];
-
-    //     doughnuts[i].getName(tempName);
-    //     doughnuts[i].getAddIns(tempAddIns);
-    //     doughnutType(doughnuts[i].getType(), doughnut);
-    //     cout << i + 1 << ". " << doughnuts[i].getInventory() << ';'
-    //          << tempName << ';' << fixed << setprecision(2)
-    //          << doughnuts[i].getPrice() << ';' << tempAddIns << ';'
-    //          << doughnut << endl;
-    // }
 }
 
 /*
@@ -355,6 +286,8 @@ void Inventory::insertDoughnut(Doughnut & newDoughnut){
         nodePtr->next = cur;
     }
     count++;
+
+    delete nodePtr;
 }
 
 int Inventory::getCount()
@@ -510,26 +443,12 @@ void Inventory::saveAndQuit()
     outFile << "inventory count;doughnut name;price;ingredients;type\n";
 
     for (cur;cur;cur = cur->next){
-        outfile << cur->doughnut.getInventory() << ";"
+        outFile << cur->doughnut.getInventory() << ";"
                 << cur->doughnut.getName() << ";"
                 << fixed << setprecision(2) << cur->doughnut.getPrice() << ";"
                 << cur->doughnut.getAddIns() << ";"
-                << cur->doughnut.getType() << ";"
+                << cur->doughnut.getType() << '\n';
     }
-
-    // for (int i = 0; i < count; i++)
-    // {
-    //     char name[101];
-    //     char addIns[101];
-    //     doughnuts[i].getName(name);
-    //     doughnuts[i].getAddIns(addIns);
-
-    //     outFile << doughnuts[i].getInventory() << ";"
-    //             << name << ";"
-    //             << doughnuts[i].getPrice() << ";"
-    //             << addIns << ";"
-    //             << doughnuts[i].getType() << "\n";
-    // }
 
     outFile.close();
 
@@ -538,4 +457,6 @@ void Inventory::saveAndQuit()
 
 Inventory::~Inventory()
 {
+    delete head;
+    delete tail;
 }

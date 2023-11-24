@@ -128,6 +128,17 @@ const char * Doughnut::getName() const{
 	return name;
 }
 
+const char * Doughnut::getCapName() const{
+	char *toUpper = new char[strlen(name) + 1];
+	for(size_t i =0; i < strlen(name);i++){
+		toUpper[i] = static_cast<char>(toupper(name[i]));
+	}
+
+	toUpper[strlen(name)] = '\0';
+
+	return toUpper;
+}
+
 const char * Doughnut::getAddIns() const{
 	return addIns;
 }

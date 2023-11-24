@@ -117,20 +117,6 @@ void Inventory::writeToConsole()
             cur = cur->next;
         }
     }
-    // cout << endl
-    //      << count << endl;
-    // for (int i = 0; i < count; i++)
-    // {
-    //     char tempName[101], tempAddIns[101], doughnut[10];
-
-    //     doughnuts[i].getName(tempName);
-    //     doughnuts[i].getAddIns(tempAddIns);
-    //     doughnutType(doughnuts[i].getType(), doughnut);
-    //     cout << i + 1 << ". " << doughnuts[i].getInventory() << ';'
-    //          << tempName << ';' << fixed << setprecision(2)
-    //          << doughnuts[i].getPrice() << ';' << tempAddIns << ';'
-    //          << doughnut << endl;
-    // }
 }
 
 /*
@@ -317,15 +303,15 @@ void Inventory::insertDoughnut(Doughnut &newDoughnut){
     if(head == nullptr){    //if list is empty head = new node
         head = nodePtr;
         tail = nodePtr;
-    } else if (strcmp(newDoughnut.getName(), head->doughnut.getName()) <= 0){ //add to the head
+    } else if (strcmp(newDoughnut.getCapName(), head->doughnut.getCapName()) <= 0){ //add to the head
         nodePtr->next = head;
         head = nodePtr;
-    } else if (strcmp(tail->doughnut.getName(), nodePtr->doughnut.getName()) <= 0) {  //add to the end of the list
+    } else if (strcmp(tail->doughnut.getCapName(), nodePtr->doughnut.getCapName()) <= 0) {  //add to the end of the list
         tail->next = nodePtr;
         tail = nodePtr;
     } else {
         cur = prev = head;
-        while(strcmp(nodePtr->doughnut.getName(), cur->doughnut.getName()) >= 0){   //add into list
+        while(strcmp(nodePtr->doughnut.getCapName(), cur->doughnut.getCapName()) >= 0){   //add into list
             prev = cur;
             cur = cur->next;
         }

@@ -45,6 +45,7 @@ public:
 	int getType();
 	const char * getName() const;
 	const char * getAddIns() const;
+	const char * getCapName() const;
 
 	~Doughnut();
 };

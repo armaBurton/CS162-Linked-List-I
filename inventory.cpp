@@ -441,9 +441,6 @@ void Inventory::listByType()
     char prompt[101] = "Enter type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Other";
     int type, typeCount = 1;
     Node * cur = head;
-    Node * prev = nullptr;
-    Doughnut doughnutsOfType[101];
-    Inventory typeODonut;
     getInt(prompt, 0, 4, type);
 
     for(cur;cur;cur = cur->next){
@@ -453,23 +450,11 @@ void Inventory::listByType()
             cout << typeCount++ << ". "
                  << cur->doughnut.getInventory() << ";"
                  << cur->doughnut.getName() << ";"
-                 << fixed << setprecision(2) << "$" << cur->doughnut.getInventory() << ";"
+                 << fixed << setprecision(2) << "$" << cur->doughnut.getPrice() << ";"
                  << cur->doughnut.getAddIns() << ";"
                  << donutType << endl;
         }
     }
-
-    // for (int i = 0; i < count; i++)
-    // {
-    //     if (doughnuts[i].getType() == type)
-    //     {
-    //         doughnutsOfType[typeCount] = doughnuts[i];
-    //         typeCount++;
-    //     }
-    // }
-
-    // cout << "Doughnuts of that type are:" << endl;
-    // writeToConsoleSelect(typeODonut, typeCount);
 }
 
 /*
@@ -483,13 +468,27 @@ void Inventory::listByType()
 */
 void Inventory::listByIngredient()
 {
-    // char prompt[101] = "Enter the search ingredient: ";
-    // char userPrompt[101];
-    // Doughnut doughnutsByIngredient[101];
-    // int newCount = 0;
-    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    Node * cur = head;
+    char prompt[101] = "Enter the search ingredient: ";
+    char userPrompt[101];
+    Doughnut doughnutsByIngredient[101];
+    int newCount = 1;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    // getCharacterString(prompt, 101, userPrompt);
+    getCharacterString(prompt, 101, userPrompt);
+
+    for(cur;cur;cur = cur->next){
+        if (strstr(cur->doughnut.getAddIns(), userPrompt) != nullptr){
+            char donutType[MAXCHAR];
+            doughnutType(cur->doughnut.getType(), donutType);
+            cout << newCount++ << ". "
+                 << cur->doughnut.getInventory() << ";"
+                 << cur->doughnut.getName() << ";"
+                 << fixed << setprecision(2) << "$" << cur->doughnut.getPrice() << ";"
+                 << cur->doughnut.getAddIns() << ";"
+                 << donutType << endl;
+        }
+    }
 
     // for (int i = 0; i < count; i++)
     // {

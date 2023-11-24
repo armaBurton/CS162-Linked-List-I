@@ -43,11 +43,8 @@ public:
 	double getPrice();
 	void getAddIns(char *);
 	int getType();
-	// int getInventory() const;
-	// void getName(char *) const;
-	// double getPrice() const;
-	// void getAddIns(char *) const;
-	// int getType() const;
+	const char * getName() const;
+	const char * getAddIns() const;
 
 	~Doughnut();
 };

@@ -3,6 +3,12 @@
 
 const int CAP = 1;
 const int GROW = 5;
+// const int MAXCHAR = 101;
+
+struct Node {
+    Doughnut doughnut;
+    Node * next;
+};
 
 class Inventory
 {
@@ -11,13 +17,13 @@ private:
     int count;
     int capacity;
     void growList();
+    Node * head;
+    Node * tail;
 
 public:
     // constructors
     Inventory();
-    // Inventory(Doughnut *, int);
-    // copy constructor
-    // Inventory(const Doughnut &aDoughnut);
+    ~Inventory();
 
     void removeByIndex();
     void removeIndex(const int index);
@@ -35,7 +41,6 @@ public:
     void writeToConsoleSelect(Doughnut *doughnuts, const int count);
     void doughnutType(int num, char doughnut[]);
     void saveAndQuit();
-    ~Inventory();
 };
 
 #endif

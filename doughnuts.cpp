@@ -124,6 +124,14 @@ int Doughnut::getType()
 	return type;
 }
 
+const char * Doughnut::getName() const{
+	return name;
+}
+
+const char * Doughnut::getAddIns() const{
+	return addIns;
+}
+
 Doughnut::~Doughnut()
 {
 	delete[] name;

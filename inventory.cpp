@@ -28,16 +28,16 @@ Inventory::Inventory()
 */
 bool Inventory::loadData()
 {
-    try
-    {
-        capacity = 1;
-        doughnuts = new Doughnut[capacity];
-        count = 0;
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    // try
+    // {
+    //     capacity = 1;
+    //     doughnuts = new Doughnut[capacity];
+    //     count = 0;
+    // }
+    // catch (const std::exception &e)
+    // {
+    //     std::cerr << e.what() << '\n';
+    // }
 
     ifstream infile("voodoo.txt");
 
@@ -53,8 +53,8 @@ bool Inventory::loadData()
     int inventoryBuffer = 0;
     int typeBuffer;
     double priceBuffer;
-    char nameBuffer[101];
-    char addInsBuffer[101];
+    char nameBuffer[MAXCHAR];
+    char addInsBuffer[MAXCHAR];
 
     while (infile >> inventoryBuffer)
     {
@@ -74,7 +74,7 @@ bool Inventory::loadData()
         insertDoughnut(loadedDoughnut);
     }
 
-    infile.close();
+    // infile.close();
 
     return true;
 }
@@ -306,80 +306,92 @@ void Inventory::getUpper(char makeUpper[], int &makeCount, char targetCString[])
 */
 void Inventory::insertDoughnut(Doughnut &newDoughnut)
 {
-    int index = getCount(),
-        newCount = 0,
-        oldCount = 0;
-    char *tempName = new char[MAXCHAR],
-         *tempAddIns = new char[MAXCHAR];
-
-    newDoughnut.getName(tempName);
-    newDoughnut.getAddIns(tempAddIns);
-    Doughnut *tempDoughnut = new Doughnut(
-        newDoughnut.getInventory(),
-        tempName,
-        newDoughnut.getPrice(),
-        tempAddIns,
-        newDoughnut.getType());
-
-    if (count == capacity)
-    {
-        growList();
+    Node * nodePtr = new Node;//Nodes have both a Doughnut and a next pointer
+    Node * cur, * prev;
+    nodePtr->next = nullptr;
+    nodePtr->doughnut = newDoughnut;
+    if(head == nullptr){    //if list is empty head = new node
+        head = nodePtr;
+        tail = nodePtr;
+    } else if (strcmp(newDoughnut.getName(), head->doughnut.getName()) <= 0){ //add to the head
+        nodePtr->next = head;
+        head = nodePtr;
     }
 
-    //if count is 0 set doughnuts[0] to *tempDoughnut
-    if (count == 0) {
-        doughnuts[0] = *tempDoughnut;
-        delete tempDoughnut;
-    } else {
-        //get and capitalize the name of the new doughnut
-        char *newUpper = new char[MAXCHAR],
-             *newNameBuffer = new char[MAXCHAR];
-        newDoughnut.getName(newNameBuffer);
-        getUpper(newUpper, newCount, newNameBuffer);
+    // int index = getCount(),
+    //     newCount = 0,
+    //     oldCount = 0;
+    // char *tempName = new char[MAXCHAR],
+    //      *tempAddIns = new char[MAXCHAR];
 
-        for (int i = 0; i < count; i++){
-           //get and capitalize the name of the doughnut at [i]
-            char *oldUpper = new char[MAXCHAR],
-                 *oldNameBuffer = new char[MAXCHAR];
-            doughnuts[i].getName(oldNameBuffer);
-            getUpper(oldUpper, oldCount, oldNameBuffer);
-            //if newUpper is less than oldUpper index = i
-            // if oldUpper is equal to "NO NAME" index = i - 1
-            if(strcmp(oldUpper, "NO NAME") == 0){
-                index = i - 1;
-                break;
-            }
-            if(strcmp(newUpper, oldUpper) < 0){
-                index = i;
-                break;
-            }
-            delete [] oldUpper;
-            delete [] oldNameBuffer;
-            //reset count
-            oldCount = 0;
-        }
+    // newDoughnut.getName(tempName);
+    // newDoughnut.getAddIns(tempAddIns);
+    // Doughnut *tempDoughnut = new Doughnut(
+    //     newDoughnut.getInventory(),
+    //     tempName,
+    //     newDoughnut.getPrice(),
+    //     tempAddIns,
+    //     newDoughnut.getType());
 
-        //sort
-        for (int i = count; i > index; i--){
-            char *tempName = new char[MAXCHAR],
-                 *tempAddIns = new char[MAXCHAR];
+    // if (count == capacity)
+    // {
+    //     growList();
+    // }
+
+    // //if count is 0 set doughnuts[0] to *tempDoughnut
+    // if (count == 0) {
+    //     doughnuts[0] = *tempDoughnut;
+    //     delete tempDoughnut;
+    // } else {
+    //     //get and capitalize the name of the new doughnut
+    //     char *newUpper = new char[MAXCHAR],
+    //          *newNameBuffer = new char[MAXCHAR];
+    //     newDoughnut.getName(newNameBuffer);
+    //     getUpper(newUpper, newCount, newNameBuffer);
+
+    //     for (int i = 0; i < count; i++){
+    //        //get and capitalize the name of the doughnut at [i]
+    //         char *oldUpper = new char[MAXCHAR],
+    //              *oldNameBuffer = new char[MAXCHAR];
+    //         doughnuts[i].getName(oldNameBuffer);
+    //         getUpper(oldUpper, oldCount, oldNameBuffer);
+    //         //if newUpper is less than oldUpper index = i
+    //         // if oldUpper is equal to "NO NAME" index = i - 1
+    //         if(strcmp(oldUpper, "NO NAME") == 0){
+    //             index = i - 1;
+    //             break;
+    //         }
+    //         if(strcmp(newUpper, oldUpper) < 0){
+    //             index = i;
+    //             break;
+    //         }
+    //         delete [] oldUpper;
+    //         delete [] oldNameBuffer;
+    //         //reset count
+    //         oldCount = 0;
+    //     }
+
+    //     //sort
+    //     for (int i = count; i > index; i--){
+    //         char *tempName = new char[MAXCHAR],
+    //              *tempAddIns = new char[MAXCHAR];
             
-            doughnuts[i - 1].getName(tempName);
-            doughnuts[i - 1].getAddIns(tempAddIns);
+    //         doughnuts[i - 1].getName(tempName);
+    //         doughnuts[i - 1].getAddIns(tempAddIns);
 
-            doughnuts[i].setInventory(doughnuts[i - 1].getInventory());
-            doughnuts[i].setName(tempName);
-            doughnuts[i].setPrice(doughnuts[i - 1].getPrice());
-            doughnuts[i].setAddIns(tempAddIns);
-            doughnuts[i].setType(doughnuts[i - 1].getType());
-        }
+    //         doughnuts[i].setInventory(doughnuts[i - 1].getInventory());
+    //         doughnuts[i].setName(tempName);
+    //         doughnuts[i].setPrice(doughnuts[i - 1].getPrice());
+    //         doughnuts[i].setAddIns(tempAddIns);
+    //         doughnuts[i].setType(doughnuts[i - 1].getType());
+    //     }
 
-        doughnuts[index] = newDoughnut;
+    //     doughnuts[index] = newDoughnut;
 
-    }
-    count++;
-    delete[] tempName;
-    delete[] tempAddIns;
+    // }
+    // count++;
+    // delete[] tempName;
+    // delete[] tempAddIns;
 }
 
 void Inventory::growList()

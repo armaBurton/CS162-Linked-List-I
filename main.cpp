@@ -21,23 +21,23 @@
 
 int main()
 {
-	Inventory *inventory = new Inventory();
+	Inventory inventory;
+	Doughnut doughnut;
 
 	char option[10];
 
-	if (!inventory->loadData())
-	{
+	if (!inventory.loadData()){
 		cerr << "Failed to load data" << endl;
 		return 1;
 	}
 
-	greetings(inventory->getCount());
+	greetings(inventory.getCount());
 
-	do
-	{
-		menu(option);
-		menuOption(option, inventory);
-	} while (option[0] != 'q');
+	// do
+	// {
+	// 	menu(option);
+	// 	menuOption(option, inventory);
+	// } while (option[0] != 'q');
 
 	return 0;
 }

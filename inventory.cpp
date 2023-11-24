@@ -4,7 +4,8 @@
 // constructors
 Inventory::Inventory()
 {
-    doughnuts = nullptr;
+    head = nullptr;
+    tail = nullptr;
     count = 0;
 }
 
@@ -28,17 +29,6 @@ Inventory::Inventory()
 */
 bool Inventory::loadData()
 {
-    // try
-    // {
-    //     capacity = 1;
-    //     doughnuts = new Doughnut[capacity];
-    //     count = 0;
-    // }
-    // catch (const std::exception &e)
-    // {
-    //     std::cerr << e.what() << '\n';
-    // }
-
     ifstream infile("voodoo.txt");
 
     if (!infile.is_open())
@@ -112,20 +102,20 @@ void Inventory::writeToConsoleSelect(Doughnut *doughnuts, const int count)
 */
 void Inventory::writeToConsole()
 {
-    cout << endl
-         << count << endl;
-    for (int i = 0; i < count; i++)
-    {
-        char tempName[101], tempAddIns[101], doughnut[10];
+    // cout << endl
+    //      << count << endl;
+    // for (int i = 0; i < count; i++)
+    // {
+    //     char tempName[101], tempAddIns[101], doughnut[10];
 
-        doughnuts[i].getName(tempName);
-        doughnuts[i].getAddIns(tempAddIns);
-        doughnutType(doughnuts[i].getType(), doughnut);
-        cout << i + 1 << ". " << doughnuts[i].getInventory() << ';'
-             << tempName << ';' << fixed << setprecision(2)
-             << doughnuts[i].getPrice() << ';' << tempAddIns << ';'
-             << doughnut << endl;
-    }
+    //     doughnuts[i].getName(tempName);
+    //     doughnuts[i].getAddIns(tempAddIns);
+    //     doughnutType(doughnuts[i].getType(), doughnut);
+    //     cout << i + 1 << ". " << doughnuts[i].getInventory() << ';'
+    //          << tempName << ';' << fixed << setprecision(2)
+    //          << doughnuts[i].getPrice() << ';' << tempAddIns << ';'
+    //          << doughnut << endl;
+    // }
 }
 
 /*
@@ -304,112 +294,53 @@ void Inventory::getUpper(char makeUpper[], int &makeCount, char targetCString[])
     output: none
     return: none
 */
-void Inventory::insertDoughnut(Doughnut &newDoughnut)
-{
+void Inventory::insertDoughnut(Doughnut &newDoughnut){
     Node * nodePtr = new Node;//Nodes have both a Doughnut and a next pointer
     Node * cur, * prev;
     nodePtr->next = nullptr;
     nodePtr->doughnut = newDoughnut;
+    cout << nodePtr->doughnut.getName() << endl;
     if(head == nullptr){    //if list is empty head = new node
         head = nodePtr;
         tail = nodePtr;
+        cout << "new" << endl;
     } else if (strcmp(newDoughnut.getName(), head->doughnut.getName()) <= 0){ //add to the head
+        cout << "heads" << endl;
         nodePtr->next = head;
         head = nodePtr;
+    } else if (strcmp(tail->doughnut.getName(), nodePtr->doughnut.getName()) <= 0) {  //add to the end of the list
+        cout << "tails" << endl;
+        tail->next = nodePtr;
+        tail = nodePtr;
+    } else {
+        cur = prev = head;
+        while(strcmp(nodePtr->doughnut.getName(), cur->doughnut.getName()) >= 0){
+            prev = cur;
+            cur = cur->next;
+            cout << "while loop" << endl;
+        }
+        prev->next = nodePtr;
+        nodePtr->next = cur;
     }
-
-    // int index = getCount(),
-    //     newCount = 0,
-    //     oldCount = 0;
-    // char *tempName = new char[MAXCHAR],
-    //      *tempAddIns = new char[MAXCHAR];
-
-    // newDoughnut.getName(tempName);
-    // newDoughnut.getAddIns(tempAddIns);
-    // Doughnut *tempDoughnut = new Doughnut(
-    //     newDoughnut.getInventory(),
-    //     tempName,
-    //     newDoughnut.getPrice(),
-    //     tempAddIns,
-    //     newDoughnut.getType());
-
-    // if (count == capacity)
-    // {
-    //     growList();
-    // }
-
-    // //if count is 0 set doughnuts[0] to *tempDoughnut
-    // if (count == 0) {
-    //     doughnuts[0] = *tempDoughnut;
-    //     delete tempDoughnut;
-    // } else {
-    //     //get and capitalize the name of the new doughnut
-    //     char *newUpper = new char[MAXCHAR],
-    //          *newNameBuffer = new char[MAXCHAR];
-    //     newDoughnut.getName(newNameBuffer);
-    //     getUpper(newUpper, newCount, newNameBuffer);
-
-    //     for (int i = 0; i < count; i++){
-    //        //get and capitalize the name of the doughnut at [i]
-    //         char *oldUpper = new char[MAXCHAR],
-    //              *oldNameBuffer = new char[MAXCHAR];
-    //         doughnuts[i].getName(oldNameBuffer);
-    //         getUpper(oldUpper, oldCount, oldNameBuffer);
-    //         //if newUpper is less than oldUpper index = i
-    //         // if oldUpper is equal to "NO NAME" index = i - 1
-    //         if(strcmp(oldUpper, "NO NAME") == 0){
-    //             index = i - 1;
-    //             break;
-    //         }
-    //         if(strcmp(newUpper, oldUpper) < 0){
-    //             index = i;
-    //             break;
-    //         }
-    //         delete [] oldUpper;
-    //         delete [] oldNameBuffer;
-    //         //reset count
-    //         oldCount = 0;
-    //     }
-
-    //     //sort
-    //     for (int i = count; i > index; i--){
-    //         char *tempName = new char[MAXCHAR],
-    //              *tempAddIns = new char[MAXCHAR];
-            
-    //         doughnuts[i - 1].getName(tempName);
-    //         doughnuts[i - 1].getAddIns(tempAddIns);
-
-    //         doughnuts[i].setInventory(doughnuts[i - 1].getInventory());
-    //         doughnuts[i].setName(tempName);
-    //         doughnuts[i].setPrice(doughnuts[i - 1].getPrice());
-    //         doughnuts[i].setAddIns(tempAddIns);
-    //         doughnuts[i].setType(doughnuts[i - 1].getType());
-    //     }
-
-    //     doughnuts[index] = newDoughnut;
-
-    // }
-    // count++;
-    // delete[] tempName;
-    // delete[] tempAddIns;
+    count++;
 }
 
-void Inventory::growList()
-{
-    capacity++;
-    char tempName[MAXCHAR];
-    char tempAddIns[MAXCHAR];
+// void Inventory::growList()
+// {
+//     capacity++;
+//     char tempName[MAXCHAR];
+//     char tempAddIns[MAXCHAR];
 
-    Doughnut *tempDoughnuts = new Doughnut[capacity];
-    for (int i = 0; i < count; i++)
-    {
-        tempDoughnuts[i] = doughnuts[i];
-    }
+//     Doughnut *tempDoughnuts = new Doughnut[capacity];
+//     for (int i = 0; i < count; i++)
+//     {
+//         tempDoughnuts[i] = doughnuts[i];
+//     }
 
-    delete[] doughnuts;
-    doughnuts = tempDoughnuts;
-    tempDoughnuts = NULL;
-}
+//     delete[] doughnuts;
+//     doughnuts = tempDoughnuts;
+//     tempDoughnuts = NULL;
+// }
 
 int Inventory::getCount()
 {
@@ -445,11 +376,11 @@ void Inventory::removeByIndex()
 */
 void Inventory::removeIndex(const int index)
 {
-    for (int i = index - 1; i < count - 1; i++)
-    {
-        doughnuts[i] = doughnuts[i + 1];
-    }
-    count--;
+    // for (int i = index - 1; i < count - 1; i++)
+    // {
+    //     doughnuts[i] = doughnuts[i + 1];
+    // }
+    // count--;
 }
 
 /*
@@ -462,22 +393,22 @@ void Inventory::removeIndex(const int index)
 */
 void Inventory::listByType()
 {
-    char prompt[101] = "Enter type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Other";
-    int type, typeCount = 0;
-    Doughnut doughnutsOfType[101];
-    getInt(prompt, 0, 4, type);
+    // char prompt[101] = "Enter type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Other";
+    // int type, typeCount = 0;
+    // Doughnut doughnutsOfType[101];
+    // getInt(prompt, 0, 4, type);
 
-    for (int i = 0; i < count; i++)
-    {
-        if (doughnuts[i].getType() == type)
-        {
-            doughnutsOfType[typeCount] = doughnuts[i];
-            typeCount++;
-        }
-    }
+    // for (int i = 0; i < count; i++)
+    // {
+    //     if (doughnuts[i].getType() == type)
+    //     {
+    //         doughnutsOfType[typeCount] = doughnuts[i];
+    //         typeCount++;
+    //     }
+    // }
 
-    cout << "Doughnuts of that type are:" << endl;
-    writeToConsoleSelect(doughnutsOfType, typeCount);
+    // cout << "Doughnuts of that type are:" << endl;
+    // writeToConsoleSelect(doughnutsOfType, typeCount);
 }
 
 /*
@@ -491,26 +422,26 @@ void Inventory::listByType()
 */
 void Inventory::listByIngredient()
 {
-    char prompt[101] = "Enter the search ingredient: ";
-    char userPrompt[101];
-    Doughnut doughnutsByIngredient[101];
-    int newCount = 0;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    // char prompt[101] = "Enter the search ingredient: ";
+    // char userPrompt[101];
+    // Doughnut doughnutsByIngredient[101];
+    // int newCount = 0;
+    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    getCharacterString(prompt, 101, userPrompt);
+    // getCharacterString(prompt, 101, userPrompt);
 
-    for (int i = 0; i < count; i++)
-    {
-        char tempAddIns[101];
-        doughnuts[i].getAddIns(tempAddIns);
-        if (strstr(tempAddIns, userPrompt) != nullptr)
-        {
-            doughnutsByIngredient[newCount] = doughnuts[i];
-            newCount++;
-        }
-    }
-    cout << "The doughnut(s) that match that ingredient are: \n";
-    writeToConsoleSelect(doughnutsByIngredient, newCount);
+    // for (int i = 0; i < count; i++)
+    // {
+    //     char tempAddIns[101];
+    //     doughnuts[i].getAddIns(tempAddIns);
+    //     if (strstr(tempAddIns, userPrompt) != nullptr)
+    //     {
+    //         doughnutsByIngredient[newCount] = doughnuts[i];
+    //         newCount++;
+    //     }
+    // }
+    // cout << "The doughnut(s) that match that ingredient are: \n";
+    // writeToConsoleSelect(doughnutsByIngredient, newCount);
 }
 
 /*
@@ -522,30 +453,30 @@ void Inventory::listByIngredient()
 */
 void Inventory::saveAndQuit()
 {
-    ofstream outFile("voodoo.txt");
-    if (!outFile.is_open())
-    {
-        cerr << "Error opening file.\n";
-        return;
-    }
-    outFile << "inventory count;doughnut name;price;ingredients;type\n";
-    for (int i = 0; i < count; i++)
-    {
-        char name[101];
-        char addIns[101];
-        doughnuts[i].getName(name);
-        doughnuts[i].getAddIns(addIns);
+    // ofstream outFile("voodoo.txt");
+    // if (!outFile.is_open())
+    // {
+    //     cerr << "Error opening file.\n";
+    //     return;
+    // }
+    // outFile << "inventory count;doughnut name;price;ingredients;type\n";
+    // for (int i = 0; i < count; i++)
+    // {
+    //     char name[101];
+    //     char addIns[101];
+    //     doughnuts[i].getName(name);
+    //     doughnuts[i].getAddIns(addIns);
 
-        outFile << doughnuts[i].getInventory() << ";"
-                << name << ";"
-                << doughnuts[i].getPrice() << ";"
-                << addIns << ";"
-                << doughnuts[i].getType() << "\n";
-    }
+    //     outFile << doughnuts[i].getInventory() << ";"
+    //             << name << ";"
+    //             << doughnuts[i].getPrice() << ";"
+    //             << addIns << ";"
+    //             << doughnuts[i].getType() << "\n";
+    // }
 
-    outFile.close();
+    // outFile.close();
 
-    cout << "Doughnuts written to file! Thank you for using my program!!\n";
+    // cout << "Doughnuts written to file! Thank you for using my program!!\n";
 }
 
 Inventory::~Inventory()

@@ -1,6 +1,8 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
+#include "doughnuts.h"
+
 const int CAP = 1;
 const int GROW = 5;
 // const int MAXCHAR = 101;
@@ -12,13 +14,13 @@ struct Node {
 
 class Inventory
 {
-private:
-    Doughnut *doughnuts;
-    int count;
-    int capacity;
-    void growList();
     Node * head;
     Node * tail;
+    int count;
+private:
+    // Doughnut *doughnuts;
+    // int capacity;
+    // void growList();
 
 public:
     // constructors

@@ -489,19 +489,6 @@ void Inventory::listByIngredient()
                  << donutType << endl;
         }
     }
-
-    // for (int i = 0; i < count; i++)
-    // {
-    //     char tempAddIns[101];
-    //     doughnuts[i].getAddIns(tempAddIns);
-    //     if (strstr(tempAddIns, userPrompt) != nullptr)
-    //     {
-    //         doughnutsByIngredient[newCount] = doughnuts[i];
-    //         newCount++;
-    //     }
-    // }
-    // cout << "The doughnut(s) that match that ingredient are: \n";
-    // writeToConsoleSelect(doughnutsByIngredient, newCount);
 }
 
 /*
@@ -513,13 +500,23 @@ void Inventory::listByIngredient()
 */
 void Inventory::saveAndQuit()
 {
-    // ofstream outFile("voodoo.txt");
-    // if (!outFile.is_open())
-    // {
-    //     cerr << "Error opening file.\n";
-    //     return;
-    // }
-    // outFile << "inventory count;doughnut name;price;ingredients;type\n";
+    Node * cur = head;
+    ofstream outFile("voodoo.txt");
+    if (!outFile.is_open())
+    {
+        cerr << "Error opening file.\n";
+        return;
+    }
+    outFile << "inventory count;doughnut name;price;ingredients;type\n";
+
+    for (cur;cur;cur = cur->next){
+        outfile << cur->doughnut.getInventory() << ";"
+                << cur->doughnut.getName() << ";"
+                << fixed << setprecision(2) << cur->doughnut.getPrice() << ";"
+                << cur->doughnut.getAddIns() << ";"
+                << cur->doughnut.getType() << ";"
+    }
+
     // for (int i = 0; i < count; i++)
     // {
     //     char name[101];
@@ -534,9 +531,9 @@ void Inventory::saveAndQuit()
     //             << doughnuts[i].getType() << "\n";
     // }
 
-    // outFile.close();
+    outFile.close();
 
-    // cout << "Doughnuts written to file! Thank you for using my program!!\n";
+    cout << "Doughnuts written to file! Thank you for using my program!!\n";
 }
 
 Inventory::~Inventory()

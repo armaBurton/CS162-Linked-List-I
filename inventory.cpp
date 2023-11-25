@@ -45,18 +45,62 @@ bool Inventory::loadData()
         infile.getline(addInsBuffer, 101, ';');
         infile >> typeBuffer;
         infile.ignore(50, '\n');
+        // cout << inventoryBuffer << ";"
+        //     << nameBuffer << ";"
+        //     << fixed << setprecision(2) << "$" << priceBuffer << ";"
+        //     << addInsBuffer << ";"
+        //     << typeBuffer << endl;
         Doughnut loadedDoughnut(
             inventoryBuffer,
             nameBuffer,
             priceBuffer,
             addInsBuffer,
             typeBuffer);
+        // cout << loadedDoughnut.getInventory() << ";"
+        //      << loadedDoughnut.getName() << ";"
+        //      << fixed << setprecision(2) << "$" << loadedDoughnut.getPrice() << ";"
+        //      << loadedDoughnut.getAddIns() << ";"
+        //      << loadedDoughnut.getType() << endl;
         insertDoughnut(loadedDoughnut);
     }
 
     // infile.close();
 
     return true;
+}
+
+/*
+    Name:   insertDoughnut()
+    Desc:   This function inserts a doughnut into the array in alphbetical order
+    input:  none
+    output: none
+    return: none
+*/
+void Inventory::insertDoughnut(Doughnut & newDoughnut){
+    Node * nodePtr = new Node;
+    Node * cur, * prev;
+    nodePtr->next = nullptr;
+    nodePtr->doughnut = newDoughnut;
+    
+    if(head == nullptr){
+        head = nodePtr;
+        tail = nodePtr;
+    } else if (strcmp(newDoughnut.getCapName(), head->doughnut.getCapName()) <= 0){
+        nodePtr->next = head;
+        head = nodePtr;
+    } else if (strcmp(tail->doughnut.getCapName(), nodePtr->doughnut.getCapName()) <= 0){
+        tail->next = nodePtr;
+        tail = nodePtr;
+    } else { 
+        cur = prev = head;
+        while (strcmp(nodePtr->doughnut.getCapName(), cur->doughnut.getCapName()) >= 0){
+            prev = cur;
+            cur = cur->next;
+        }
+        prev->next = nodePtr;
+        nodePtr->next = cur;
+    }
+    count++;
 }
 
 /*
@@ -253,41 +297,6 @@ void Inventory::getUpper(char makeUpper[], int &makeCount, char targetCString[])
         makeCount++;
     }
     makeUpper[makeCount] = '\0';
-}
-
-/*
-    Name:   insertDoughnut()
-    Desc:   This function inserts a doughnut into the array in alphbetical order
-    input:  none
-    output: none
-    return: none
-*/
-void Inventory::insertDoughnut(Doughnut & newDoughnut){
-    Node * nodePtr = new Node;//Nodes have both a Doughnut and a next pointer
-    Node * cur, * prev;
-    nodePtr->next = nullptr;
-    nodePtr->doughnut = newDoughnut;
-    if(head == nullptr){    //if list is empty head = new node
-        head = nodePtr;
-        tail = nodePtr;
-    } else if (strcmp(newDoughnut.getCapName(), head->doughnut.getCapName()) <= 0){ //add to the head
-        nodePtr->next = head;
-        head = nodePtr;
-    } else if (strcmp(tail->doughnut.getCapName(), nodePtr->doughnut.getCapName()) <= 0) {  //add to the end of the list
-        tail->next = nodePtr;
-        tail = nodePtr;
-    } else {
-        cur = prev = head;
-        while(strcmp(nodePtr->doughnut.getCapName(), cur->doughnut.getCapName()) >= 0){   //add into list
-            prev = cur;
-            cur = cur->next;
-        }
-        prev->next = nodePtr;
-        nodePtr->next = cur;
-    }
-    count++;
-
-    delete nodePtr;
 }
 
 int Inventory::getCount()

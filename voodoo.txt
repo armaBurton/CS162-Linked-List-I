@@ -1,11 +1,11 @@
 inventory count;doughnut name;price;ingredients;type
-65;Bacon Maple Bar;4.50;maple frosting and bacon;2
-40;Marshall Mathers;3.00;vanilla frosting and mini M&Ms;0
+30;Strawberry Go-Tart;4.00;strawberry filling and vanilla frosting;2
 35;Memphis Mafia;5.50;banana cinnamon chocolate peanut butter;4
 20;Oh captain my captain;3.00;vanilla frosting and captain crunch;1
 50;Portland Creme;3.50;Bavarian creme and chocolate frosting;1
 25;Ring of Fire;2.50;cinnamon sugar and cayenne pepper;0
-30;Strawberry Go-Tart;4.00;strawberry filling and vanilla frosting;2
-20;Sweet cream Cannolo;3.50;Bavarian sweet cream;3
 150;Voodoo Doll;4.50;raspberry jelly and chocolate frosting;4
+20;Sweet cream Cannolo;3.50;Bavarian sweet cream;3
+65;Bacon Maple Bar;4.50;maple frosting and bacon;2
+40;Marshall Mathers;3.00;vanilla frosting and mini M&Ms;0
 20;Wild Berry Cannolo;3.50;berry filling cinnamon and sugar;3

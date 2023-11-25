@@ -422,6 +422,19 @@ void Inventory::listByIngredient()
                  << donutType << endl;
         }
     }
+
+    // for (int i = 0; i < count; i++)
+    // {
+    //     char tempAddIns[101];
+    //     doughnuts[i].getAddIns(tempAddIns);
+    //     if (strstr(tempAddIns, userPrompt) != nullptr)
+    //     {
+    //         doughnutsByIngredient[newCount] = doughnuts[i];
+    //         newCount++;
+    //     }
+    // }
+    // cout << "The doughnut(s) that match that ingredient are: \n";
+    // writeToConsoleSelect(doughnutsByIngredient, newCount);
 }
 
 /*
@@ -433,26 +446,30 @@ void Inventory::listByIngredient()
 */
 void Inventory::saveAndQuit()
 {
-    Node * cur = head;
-    ofstream outFile("voodoo.txt");
-    if (!outFile.is_open())
-    {
-        cerr << "Error opening file.\n";
-        return;
-    }
-    outFile << "inventory count;doughnut name;price;ingredients;type\n";
+    // ofstream outFile("voodoo.txt");
+    // if (!outFile.is_open())
+    // {
+    //     cerr << "Error opening file.\n";
+    //     return;
+    // }
+    // outFile << "inventory count;doughnut name;price;ingredients;type\n";
+    // for (int i = 0; i < count; i++)
+    // {
+    //     char name[101];
+    //     char addIns[101];
+    //     doughnuts[i].getName(name);
+    //     doughnuts[i].getAddIns(addIns);
 
-    for (cur;cur;cur = cur->next){
-        outFile << cur->doughnut.getInventory() << ";"
-                << cur->doughnut.getName() << ";"
-                << fixed << setprecision(2) << cur->doughnut.getPrice() << ";"
-                << cur->doughnut.getAddIns() << ";"
-                << cur->doughnut.getType() << '\n';
-    }
+    //     outFile << doughnuts[i].getInventory() << ";"
+    //             << name << ";"
+    //             << doughnuts[i].getPrice() << ";"
+    //             << addIns << ";"
+    //             << doughnuts[i].getType() << "\n";
+    // }
 
-    outFile.close();
+    // outFile.close();
 
-    cout << "Doughnuts written to file! Thank you for using my program!!\n";
+    // cout << "Doughnuts written to file! Thank you for using my program!!\n";
 }
 
 Inventory::~Inventory()

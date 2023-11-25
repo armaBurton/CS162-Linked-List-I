@@ -45,22 +45,12 @@ bool Inventory::loadData()
         infile.getline(addInsBuffer, 101, ';');
         infile >> typeBuffer;
         infile.ignore(50, '\n');
-        // cout << inventoryBuffer << ";"
-        //     << nameBuffer << ";"
-        //     << fixed << setprecision(2) << "$" << priceBuffer << ";"
-        //     << addInsBuffer << ";"
-        //     << typeBuffer << endl;
         Doughnut loadedDoughnut(
             inventoryBuffer,
             nameBuffer,
             priceBuffer,
             addInsBuffer,
             typeBuffer);
-        // cout << loadedDoughnut.getInventory() << ";"
-        //      << loadedDoughnut.getName() << ";"
-        //      << fixed << setprecision(2) << "$" << loadedDoughnut.getPrice() << ";"
-        //      << loadedDoughnut.getAddIns() << ";"
-        //      << loadedDoughnut.getType() << endl;
         insertDoughnut(loadedDoughnut);
     }
 

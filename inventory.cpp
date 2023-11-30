@@ -473,6 +473,4 @@ void Inventory::saveAndQuit()
 
 Inventory::~Inventory()
 {
-    delete head;
-    delete tail;
 }

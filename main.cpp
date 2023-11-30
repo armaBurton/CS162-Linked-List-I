@@ -90,12 +90,17 @@ void menu(char *option)
 	output: none/prompt
 	return: none
 */
-void menuOption(char *option, Inventory inventory)
+void menuOption(char *option, Inventory &inventory)
 {
+	Doughnut donut; 
 	switch (*option)
 	{
 	case 'a':
-		inventory.addDoughnut();
+		inventory.addDoughnut(donut);
+		inventory.insertDoughnut(donut);
+		cout << endl;
+		cout << "Updated doughnut list:" << endl;
+		inventory.writeToConsole();
 		break;
 	case 'l':
 		inventory.writeToConsole();

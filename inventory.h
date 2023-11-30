@@ -32,7 +32,8 @@ public:
     void getUpper(char makeUpper[], int &makeCount, char targetCString[]);
     void getCharacterString(char prompt[], const int max, char userPrompt[]);
     void getDouble(char prompt[], const int min, const int max, double &value);
-    void addDoughnut();
+    void addDoughnut(Doughnut & donut);
+    // void addDoughnut();
     bool loadData();
     int getCount();
     void writeToConsole();

@@ -66,7 +66,7 @@ bool Inventory::loadData()
     output: none
     return: none
 */
-void Inventory::insertDoughnut(Doughnut & newDoughnut){
+void Inventory::insertDoughnut(Doughnut &newDoughnut){
     Node * nodePtr = new Node;
     Node * cur, * prev;
     nodePtr->next = nullptr;
@@ -76,6 +76,10 @@ void Inventory::insertDoughnut(Doughnut & newDoughnut){
         head = nodePtr;
         tail = nodePtr;
     } else if (strcmp(newDoughnut.getCapName(), head->doughnut.getCapName()) <= 0){
+        /*
+            the folloing line if for error checking
+            Checking to see if it is correctly detecting whether or not the new donut is correctly sorted.
+        */
         cout << newDoughnut.getCapName() << " " << head->doughnut.getCapName() << " "  << strcmp(newDoughnut.getCapName(), head->doughnut.getCapName()) << endl;
         nodePtr->next = head;
         head = nodePtr;
@@ -92,8 +96,6 @@ void Inventory::insertDoughnut(Doughnut & newDoughnut){
         nodePtr->next = cur;
     }
     count++;
-
-    writeToConsole();
 }
 
 /*
@@ -135,7 +137,7 @@ void Inventory::writeToConsole()
     output: prompt
     return: none
 */
-void Inventory::addDoughnut()
+void Inventory::addDoughnut(Doughnut & donut)
 {
     char prompt[101];
     int inventory;
@@ -156,12 +158,35 @@ void Inventory::addDoughnut()
     getInt(prompt, 0, 4, type);
 
     Doughnut tempDoughnut(inventory, name, price, addIns, type);
-    insertDoughnut(tempDoughnut);
-
-    cout << endl;
-    cout << "Updated doughnut list:" << endl;
-    writeToConsole();
+    donut = tempDoughnut;
 }
+// void Inventory::addDoughnut()
+// {
+//     char prompt[101];
+//     int inventory;
+//     char name[101];
+//     double price;
+//     char addIns[101];
+//     int type;
+
+//     strcpy(prompt, "Enter a quantity (whole numbers between 1 and 200):");
+//     getInt(prompt, 1, 200, inventory);
+//     strcpy(prompt, "Enter the doughtname (100 characters or less): ");
+//     getCharacterString(prompt, 101, name);
+//     strcpy(prompt, "Enter the price (between 1.00 and 10.00): ");
+//     getDouble(prompt, 1, 10, price);
+//     strcpy(prompt, "Enter the ingredients (100 characters or less): ");
+//     getCharacterString(prompt, 101, addIns);
+//     strcpy(prompt, "Enter the type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Others): ");
+//     getInt(prompt, 0, 4, type);
+
+//     Doughnut tempDoughnut(inventory, name, price, addIns, type);
+//     insertDoughnut(tempDoughnut);
+
+//     cout << endl;
+//     cout << "Updated doughnut list:" << endl;
+//     writeToConsole();
+// }
 
 /*
     Name:   doughnutType()
@@ -428,19 +453,6 @@ void Inventory::listByIngredient()
                  << donutType << endl;
         }
     }
-
-    // for (int i = 0; i < count; i++)
-    // {
-    //     char tempAddIns[101];
-    //     doughnuts[i].getAddIns(tempAddIns);
-    //     if (strstr(tempAddIns, userPrompt) != nullptr)
-    //     {
-    //         doughnutsByIngredient[newCount] = doughnuts[i];
-    //         newCount++;
-    //     }
-    // }
-    // cout << "The doughnut(s) that match that ingredient are: \n";
-    // writeToConsoleSelect(doughnutsByIngredient, newCount);
 }
 
 /*
@@ -452,32 +464,33 @@ void Inventory::listByIngredient()
 */
 void Inventory::saveAndQuit()
 {
-    // ofstream outFile("voodoo.txt");
-    // if (!outFile.is_open())
-    // {
-    //     cerr << "Error opening file.\n";
-    //     return;
-    // }
-    // outFile << "inventory count;doughnut name;price;ingredients;type\n";
-    // for (int i = 0; i < count; i++)
-    // {
-    //     char name[101];
-    //     char addIns[101];
-    //     doughnuts[i].getName(name);
-    //     doughnuts[i].getAddIns(addIns);
+    ofstream outFile("voodoo.txt");
+    if (!outFile.is_open())
+    {
+        cerr << "Error opening file.\n";
+        return;
+    }
+    outFile << "inventory count;doughnut name;price;ingredients;type\n";
+    Node * cur = head;
+    for (cur;cur;cur = cur->next){
+        outFile << cur->doughnut.getInventory() << ";"
+                << cur->doughnut.getName() << ";"
+                << cur->doughnut.getPrice() << ";"
+                << cur->doughnut.getAddIns() << ";"
+                << cur->doughnut.getType() << endl;
+    }
 
-    //     outFile << doughnuts[i].getInventory() << ";"
-    //             << name << ";"
-    //             << doughnuts[i].getPrice() << ";"
-    //             << addIns << ";"
-    //             << doughnuts[i].getType() << "\n";
-    // }
+    outFile.close();
 
-    // outFile.close();
-
-    // cout << "Doughnuts written to file! Thank you for using my program!!\n";
+    cout << "Doughnuts written to file! Thank you for using my program!!\n";
 }
 
-Inventory::~Inventory()
+Inventory::~Inventory()  // this is causing my list to disappear
 {
+    // Node * cur = head;
+    // while (head != nullptr){
+    //     cur = head->next;
+    //     delete head;
+    //     head = cur;
+    // }
 }

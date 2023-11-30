@@ -76,6 +76,7 @@ void Inventory::insertDoughnut(Doughnut & newDoughnut){
         head = nodePtr;
         tail = nodePtr;
     } else if (strcmp(newDoughnut.getCapName(), head->doughnut.getCapName()) <= 0){
+        cout << newDoughnut.getCapName() << " " << head->doughnut.getCapName() << " "  << strcmp(newDoughnut.getCapName(), head->doughnut.getCapName()) << endl;
         nodePtr->next = head;
         head = nodePtr;
     } else if (strcmp(tail->doughnut.getCapName(), nodePtr->doughnut.getCapName()) <= 0){
@@ -91,6 +92,8 @@ void Inventory::insertDoughnut(Doughnut & newDoughnut){
         nodePtr->next = cur;
     }
     count++;
+
+    writeToConsole();
 }
 
 /*
@@ -154,6 +157,10 @@ void Inventory::addDoughnut()
 
     Doughnut tempDoughnut(inventory, name, price, addIns, type);
     insertDoughnut(tempDoughnut);
+
+    cout << endl;
+    cout << "Updated doughnut list:" << endl;
+    writeToConsole();
 }
 
 /*

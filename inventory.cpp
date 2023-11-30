@@ -487,10 +487,10 @@ void Inventory::saveAndQuit()
 
 Inventory::~Inventory()  // this is causing my list to disappear
 {
-    // Node * cur = head;
-    // while (head != nullptr){
-    //     cur = head->next;
-    //     delete head;
-    //     head = cur;
-    // }
+    Node * cur = head;
+    while (head != nullptr){
+        cur = head->next;
+        delete head;
+        head = cur;
+    }
 }

@@ -1,6 +1,5 @@
 inventory count;doughnut name;price;ingredients;type
 65;Bacon Maple Bar;4.5;maple frosting and bacon;2
-23;efwfew;2;wefwe;2
 40;Marshall Mathers;3;vanilla frosting and mini M&Ms;0
 35;Memphis Mafia;5.5;banana cinnamon chocolate peanut butter;4
 20;Oh captain my captain;3;vanilla frosting and captain crunch;1

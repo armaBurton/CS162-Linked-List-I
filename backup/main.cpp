@@ -42,7 +42,11 @@ int main()
 	return 0;
 }
 
-//greets the user
+// Name:   greetings()
+// Desc:   This function reads a string from the user and returns it
+// input:  none
+// output: prompt
+// return: none
 void greetings(int count)
 {
 	cout << endl
@@ -52,8 +56,14 @@ void greetings(int count)
 		 << endl;
 }
 
-//displays the menu
-//reads user choice
+/*
+	Name:   menu()
+	Desc:   This function displays the menu then
+			prompts the user for an option
+	input:  char *option
+	output: prompt
+	return: string name
+*/
 void menu(char *option)
 {
 	char inputBuffer;
@@ -72,7 +82,14 @@ void menu(char *option)
 	option[0] = tolower(inputBuffer);
 }
 
-//program routes
+/*
+	Name:   menuOption()
+	Desc:   Interperets the user input and runs the corrisponding
+			function
+	input:  none
+	output: none/prompt
+	return: none
+*/
 void menuOption(char *option, Inventory &inventory)
 {
 	Doughnut donut; 

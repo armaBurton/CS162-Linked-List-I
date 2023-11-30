@@ -9,7 +9,14 @@ Inventory::Inventory()
     count = 0;
 }
 
-//reads data from a file.
+/*
+    Name:   loadData()
+    Desc:   This function reads data from a file and
+            stores it in array of classes
+    input:  none
+    output: none/prompt
+    return: none
+*/
 bool Inventory::loadData()
 {
     ifstream infile("voodoo.txt");
@@ -47,42 +54,43 @@ bool Inventory::loadData()
         insertDoughnut(loadedDoughnut);
     }
 
-    infile.close();
+    // infile.close();
 
     return true;
 }
 
-//inserts a new donut alphabetically by name into the list
+/*
+    Name:   insertDoughnut()
+    Desc:   This function inserts a doughnut into the array in alphbetical order
+    input:  none
+    output: none
+    return: none
+*/
 void Inventory::insertDoughnut(Doughnut &newDoughnut){
     Node * nodePtr = new Node;
     Node * cur, * prev;
     nodePtr->next = nullptr;
     nodePtr->doughnut = newDoughnut;
-    char newCapName[101], headCapName[101], tailCapName[101], curCapName[101];
-
-    newDoughnut.getCapName(newCapName);
-    if (head != nullptr){
-        head->doughnut.getCapName(headCapName);
-    }
-    if (tail != nullptr){
-        tail->doughnut.getCapName(tailCapName);
-    }
+    
     if(head == nullptr){
         head = nodePtr;
         tail = nodePtr;
-    } else if (strcmp(newCapName, headCapName) <= 0){
+    } else if (strcmp(newDoughnut.getCapName(), head->doughnut.getCapName()) <= 0){
+        /*
+            the folloing line if for error checking
+            Checking to see if it is correctly detecting whether or not the new donut is correctly sorted.
+        */
+        cout << newDoughnut.getCapName() << " " << head->doughnut.getCapName() << " "  << strcmp(newDoughnut.getCapName(), head->doughnut.getCapName()) << endl;
         nodePtr->next = head;
         head = nodePtr;
-    } else if (strcmp(tailCapName, newCapName) <= 0){
+    } else if (strcmp(tail->doughnut.getCapName(), nodePtr->doughnut.getCapName()) <= 0){
         tail->next = nodePtr;
         tail = nodePtr;
     } else { 
         cur = prev = head;
-        cur->doughnut.getCapName(curCapName);
-        while (strcmp(newCapName, curCapName) >= 0){
+        while (strcmp(nodePtr->doughnut.getCapName(), cur->doughnut.getCapName()) >= 0){
             prev = cur;
             cur = cur->next;
-            cur->doughnut.getCapName(curCapName);           
         }
         prev->next = nodePtr;
         nodePtr->next = cur;
@@ -90,7 +98,14 @@ void Inventory::insertDoughnut(Doughnut &newDoughnut){
     count++;
 }
 
-//writes the contents of the list to the console.
+/*
+    Name:   writeToConsole()
+    Desc:   This function reads through the array and displays
+            the data to the console
+    input:  none
+    output: prompt
+    return: none
+*/
 void Inventory::writeToConsole()
 {
     Node * cur = head;
@@ -110,9 +125,18 @@ void Inventory::writeToConsole()
     }
 }
 
-//Prompts the user for a new donut
-//creates a new donut and sends it back to the function that called it 
-//through a reference parameter
+/*
+    Name:   addDoughnut()
+    Desc:   This function adds a doughnut to the array
+    input:  char prompt[]
+            int inventory
+            char name[]
+            double price
+            char addIn[]
+            int type
+    output: prompt
+    return: none
+*/
 void Inventory::addDoughnut(Doughnut & donut)
 {
     char prompt[101];
@@ -136,10 +160,42 @@ void Inventory::addDoughnut(Doughnut & donut)
     Doughnut tempDoughnut(inventory, name, price, addIns, type);
     donut = tempDoughnut;
 }
+// void Inventory::addDoughnut()
+// {
+//     char prompt[101];
+//     int inventory;
+//     char name[101];
+//     double price;
+//     char addIns[101];
+//     int type;
 
-//this is called when writing to the console
-//the donut type is provided as an int and then returned
-//as a cstring
+//     strcpy(prompt, "Enter a quantity (whole numbers between 1 and 200):");
+//     getInt(prompt, 1, 200, inventory);
+//     strcpy(prompt, "Enter the doughtname (100 characters or less): ");
+//     getCharacterString(prompt, 101, name);
+//     strcpy(prompt, "Enter the price (between 1.00 and 10.00): ");
+//     getDouble(prompt, 1, 10, price);
+//     strcpy(prompt, "Enter the ingredients (100 characters or less): ");
+//     getCharacterString(prompt, 101, addIns);
+//     strcpy(prompt, "Enter the type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Others): ");
+//     getInt(prompt, 0, 4, type);
+
+//     Doughnut tempDoughnut(inventory, name, price, addIns, type);
+//     insertDoughnut(tempDoughnut);
+
+//     cout << endl;
+//     cout << "Updated doughnut list:" << endl;
+//     writeToConsole();
+// }
+
+/*
+    Name:   doughnutType()
+    Desc:   This function interpertes the type value and
+            return the corrisponding string
+    input:  none
+    output: none
+    return: none
+*/
 void Inventory::doughnutType(int num, char doughnut[])
 {
     switch (num)
@@ -165,9 +221,14 @@ void Inventory::doughnutType(int num, char doughnut[])
     }
 }
 
-//displays the prompt provided in the prompt[] paramter
-//reads an integer from the user and checks against the min and max
-//returns the int by reference
+/*
+    Name:   getInt()
+    Desc:   This function reads a integer from the user
+            performs data validataion
+    input:  int intBuffer
+    output: string prompt
+    return: none
+*/
 void Inventory::getInt(char prompt[], const int min, const int max, int &value)
 {
     int intBuffer;
@@ -193,9 +254,14 @@ void Inventory::getInt(char prompt[], const int min, const int max, int &value)
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-//displays the prompt provided in the prompt[] paramter
-//reads an array of characters from the user
-//returns the cstring by reference
+/*
+    Name:   getCharacterString()
+    Desc:   This function reads input from the user in the
+            form of a character string
+    input:  char userPrompt[]
+    output: char prompt[]
+    return: none
+*/
 void Inventory::getCharacterString(char prompt[], const int max, char userPrompt[])
 {
     char userInput[max];
@@ -204,10 +270,14 @@ void Inventory::getCharacterString(char prompt[], const int max, char userPrompt
     strncpy(userPrompt, userInput, max);
 }
 
-
-//displays the prompt provided in the prompt[] paramter
-//reads an double from the user and checks against the min and max
-//returns the double by reference
+/*
+    Name:   getDouble()
+    Desc:   This function reads data from the user in the
+            form of a double
+    input:  double
+    output: prompt
+    return: none
+*/
 void Inventory::getDouble(char prompt[], const int min, const int max, double &value)
 {
     double doubleBuffer;
@@ -233,70 +303,103 @@ void Inventory::getDouble(char prompt[], const int min, const int max, double &v
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-//returns the count
+/*
+    Name:   getUpper()
+    Desc:   This function converts the target cstring
+            to uppercase
+    input:  none
+    output: none
+    return: none
+*/
+void Inventory::getUpper(char makeUpper[], int &makeCount, char targetCString[])
+{
+    while (targetCString[makeCount] != '\0')
+    {
+        makeUpper[makeCount] = toupper(targetCString[makeCount]);
+        makeCount++;
+    }
+    makeUpper[makeCount] = '\0';
+}
+
 int Inventory::getCount()
 {
     return count;
 }
 
-//prompts the user for an index of a donut to remove from the list
-//then displays the new list to the console
+/*
+    Name:   removeByIndex()
+    Desc:   This function reads an int from the user and
+            then send the number to removeIndex()
+    input:  int
+    output: prompt
+    return: none
+*/
 void Inventory::removeByIndex()
 {
     int index;
     if (head != nullptr){
-        cout << endl;
         char prompt[101] = "Enter index of the doughtnut to remove: ";
-
         writeToConsole();
-        getInt(prompt, 1, count, index);
 
+        getInt(prompt, 1, count, index);
         while (index < 1 || index > count){
             strcpy(prompt, "Index out of bounds, please try again: ");
             getInt(prompt, 1, count, index);
         }
         removeIndex(index);
-        cout << endl <<  "After removal of index: " << index << endl;
-        writeToConsole();
+        cout << "after removal" << endl;
     } else {
         cout << "The list is empty." << endl;
     }
 }
 
-//handles the removal of the index provided by the user
+/*
+    Name:   removeIndex()
+    Desc:   This function removes the doughnut from the
+            associated index
+    input:  none
+    output: none
+    return: none
+*/
 void Inventory::removeIndex(const int index)
 {
     Node * cur = head;
     Node * prev = nullptr;
     int curCount = 1;
 
-    if (index == 1){                    //in the case of the deletion of the first element 
-        if(head->next == nullptr){      //if next = nullptr then reset the list
+    if (index == 1){
+        if(head->next == nullptr){
             delete head;
             count--;
             head = tail = nullptr;
-        } else {                        //otherwise assign head next
-            head = head->next;          
-            delete cur;                 //delete the old head
+        } else {
+            head = head->next;
+            delete cur;
             count--;
         }
-    } else {                            //otherwise
-        while (curCount < index){       //traverse the list until you reach index
-            prev = cur;                 
-            cur = cur->next;            
-            curCount++;                 //until curCount == index
+    } else {
+        while (curCount < index){
+            prev = cur;
+            cur = cur->next;
+            curCount++;
         }
-        prev->next = cur->next;         //remove cur by setting prev->next to cur->next
-        delete cur;                     //delete the cur node
-        count--;                        //decrement count
-        if (prev->next == nullptr){     //reset the tail if prev->next == nullptr
+        prev->next = cur->next;
+        delete cur;
+        count--;
+        if (prev->next == nullptr){
             tail = prev;
         }
     }
 }
 
-//prompts the user for a int associated with a type of donut
-//then traverses through the list printing the corrisponding donuts
+/*
+    Name:   listByType()
+    Desc:   This function reads an int from the user then creates an array
+            of doughnuts that have the matching type
+    input:  int
+    output: prompt, Doughnut
+    return: none
+*/
 void Inventory::listByType()
 {
     char prompt[101] = "Enter type: (0)Ring, (1)Round, (2)Bar, (3)Cannoli, (4)Other";
@@ -318,8 +421,15 @@ void Inventory::listByType()
     }
 }
 
-//prompts the user for an ingredient then traverses the list searching for
-//donuts that have matching ingredients and writing them to console
+/*
+    Name:   listByIngredient()
+    Desc:   This function reads a cstring from the user and then
+            searches the addIns value for matches, It creates an array
+            of type Doughnut when it finds matches
+    input:  int
+    output: prompt, Doughnut
+    return: none
+*/
 void Inventory::listByIngredient()
 {
     Node * cur = head;
@@ -345,7 +455,13 @@ void Inventory::listByIngredient()
     }
 }
 
-//writes the current list to a file and closes the program
+/*
+    Name:   save and quit()
+    Desc:   This function writes the data to a file then quits the program
+    input:  none
+    output: prompt
+    return: none
+*/
 void Inventory::saveAndQuit()
 {
     ofstream outFile("voodoo.txt");
@@ -369,8 +485,7 @@ void Inventory::saveAndQuit()
     cout << "Doughnuts written to file! Thank you for using my program!!\n";
 }
 
-//while head != nullptr, traverse the list and delete each element
-Inventory::~Inventory()
+Inventory::~Inventory()  // this is causing my list to disappear
 {
     Node * cur = head;
     while (head != nullptr){

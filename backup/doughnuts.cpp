@@ -51,7 +51,7 @@ const Doughnut& Doughnut::operator=( Doughnut& aDoughnut)
 	}
 	else
 	{
-		char tempName[MAXCHAR], tempAddIns[MAXCHAR];
+		char *tempName = new char[MAXCHAR], *tempAddIns = new char[MAXCHAR];
 		aDoughnut.getName(tempName);
 		aDoughnut.getAddIns(tempAddIns);
 		this->setInventory(aDoughnut.getInventory());
@@ -128,14 +128,15 @@ const char * Doughnut::getName() const{
 	return name;
 }
 
-//returns a capitalized version of the name through reference
-void Doughnut::getCapName(char * capName){
-    int count = strlen(name) + 1;
+const char * Doughnut::getCapName() const{
+	char *toUpper = new char[strlen(name) + 1];
+	for(size_t i = 0; i < strlen(name);i++){
+		toUpper[i] = static_cast<char>(toupper(name[i]));
+	}
 
-    strncpy(capName, name, 101);
-    for(int i = 0; i < count; i++){
-        capName[i] = toupper(capName[i]);
-    } 
+	toUpper[strlen(name)] = '\0';
+
+	return toUpper;
 }
 
 const char * Doughnut::getAddIns() const{
